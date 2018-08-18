@@ -9,12 +9,12 @@ function setup() {
 
 function draw() {
 
-    background(0, 30);
+    background(0, 10);
     for (i = Circles.length - 1; i >= 0; i--) {
         Circles[i].show();
         Circles[i].update();
-        if(Circles[i].alp == 0){
-            Circles.splice(0,1);
+        if (Circles[i].alp == 0) {
+            Circles.splice(0, 1);
         }
     }
 
@@ -22,7 +22,7 @@ function draw() {
 
 function mouseDragged() {
     Circles.push(new Circle(mouseX, mouseY,
-        random(50,100), 2, 2, 0, 2, random(256), random(256), random(256)));
+        random(50, 100), 2, 2, 0, 2, random(256), random(256), random(256)));
     print('Added new circle!')
 }
 
@@ -39,13 +39,13 @@ class Circle {
         this.g = g;
         this.b = b;
         this.alp = 256;
-        this.vx = random(-1, 1);
-        this.vy = random(-1, 1);
+        this.vx = random(-3, 3);
+        this.vy = random(-3, 3);
 
     }
 
     update() {
- 
+
         if (this.x <= this.radius / 2 || this.x >= (width - this.radius / 2)) {
             this.vx = -this.vx;
         }
