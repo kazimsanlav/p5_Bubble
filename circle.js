@@ -1,42 +1,60 @@
 let Circles = [];
+var gravity = 0.2;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
     background(0);
-    circle1 = new Circle(windowWidth / 2, windowHeight / 2,
-        50, 2, 2, 0, 1);
-    circle2 = new Circle(windowWidth / 2, windowHeight / 2,
-        50, -2, -2, 0, 1);
     // console.log(radius);
 }
 
 function draw() {
 
-    background(0);
-    for (i = 0; i < Circles.length; i++) {
-        Circles[i].move();
+    background(0, 30);
+    for (i = Circles.length - 1; i >= 0; i--) {
+        Circles[i].show();
+        Circles[i].update();
+        if(Circles[i].alp == 0){
+            Circles.splice(0,1);
+        }
     }
-    
+
 }
 
-function mouseClicked() {
+function mouseDragged() {
     Circles.push(new Circle(mouseX, mouseY,
-        50, 2, 2, 0, 1));
+        random(50,100), 2, 2, 0, 2, random(256), random(256), random(256)));
     print('Added new circle!')
 }
 
 class Circle {
-    constructor(xloc, yloc, radius, xdirec, ydirec, count, incrmnt) {
-        this.xloc = xloc; //windowWidth/2;
-        this.yloc = yloc; //windowHeight/2;
+    constructor(x, y, radius, vx, vy, count, incrmnt, r, g, b, alp) {
+        this.x = x; //windowWidth/2;
+        this.y = y; //windowHeight/2;
         this.radius = radius; //50;
-        this.xdirec = xdirec; //2,
-        this.ydirec = ydirec; //2;
+        //this.vx = vx; //2,
+        //this.vy = vy; //2;
         this.count = count; //0;
         this.incrmnt = incrmnt; // 1;
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.alp = 256;
+        this.vx = random(-1, 1);
+        this.vy = random(-1, 1);
+
     }
 
-    move() {
+    update() {
+ 
+        if (this.x <= this.radius / 2 || this.x >= (width - this.radius / 2)) {
+            this.vx = -this.vx;
+        }
+        if (this.y <= this.radius / 2 || this.y >= (height - this.radius / 2)) {
+            this.vy = -this.vy;
+        }
+
+        this.alp--;
+
         if (this.count == 256)
             this.incrmnt = -1;
         else if (this.count == 0)
@@ -44,21 +62,17 @@ class Circle {
 
         this.count = this.count + this.incrmnt;
 
+        this.x += this.vx;
+        this.y += this.vy;
         // console.log(count);
         // this.radius = this.count;
 
-        if (this.xloc <= this.radius / 2 || this.xloc >= (width - this.radius / 2)) {
-            this.xdirec = -this.xdirec;
-        }
-        if (this.yloc <= this.radius / 2 || this.yloc >= (height - this.radius / 2)) {
-            this.ydirec = -this.ydirec;
-        }
-        this.xloc = this.xloc + this.xdirec;
-        this.yloc = this.yloc + this.ydirec;
+    }
 
+    show() {
         noStroke();
-        fill(this.count, this.count, this.count, 50);
-        ellipse(this.xloc, this.yloc, this.radius, this.radius);
+        fill(this.r, this.g, this.b, this.alp);
+        ellipse(this.x, this.y, this.radius, this.radius);
     }
 
 }
